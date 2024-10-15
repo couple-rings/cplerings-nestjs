@@ -4,7 +4,7 @@ import { Types } from 'mongoose';
 
 export class CreateMessageDto {
   @Allow()
-  sender: string;
+  sender: number;
 
   @Allow()
   content: string;

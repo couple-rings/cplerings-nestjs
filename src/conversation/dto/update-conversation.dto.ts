@@ -1,4 +1,4 @@
-import { IsMongoId, IsOptional, IsString } from 'class-validator';
+import { IsMongoId, IsNumber, IsOptional } from 'class-validator';
 import { Types } from 'mongoose';
 
 export class UpdateConversationDto {
@@ -7,6 +7,6 @@ export class UpdateConversationDto {
   latestMessage: Types.ObjectId;
 
   @IsOptional()
-  @IsString()
-  userId: string;
+  @IsNumber()
+  userId: number;
 }

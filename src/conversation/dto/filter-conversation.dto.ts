@@ -2,7 +2,7 @@ import { IsNotEmpty } from 'class-validator';
 
 export class ConversationFilterDto {
   @IsNotEmpty()
-  userId: string;
+  userId: number;
 
   //   @IsOptional()
   //   @Type(() => Number)

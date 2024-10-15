@@ -3,7 +3,7 @@ import {
   ArrayMinSize,
   IsArray,
   IsNotEmpty,
-  IsString,
+  IsNumber,
 } from 'class-validator';
 
 export class CreateConversationDto {
@@ -11,6 +11,6 @@ export class CreateConversationDto {
   @IsArray()
   @ArrayMaxSize(2)
   @ArrayMinSize(2)
-  @IsString({ each: true })
-  participants: string[];
+  @IsNumber({}, { each: true })
+  participants: number[];
 }

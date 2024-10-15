@@ -9,7 +9,7 @@ export type MessageDocument = HydratedDocument<Message>;
 @Schema({ timestamps: true })
 export class Message {
   @Prop()
-  sender: string;
+  sender: number;
 
   @Prop()
   content: string;

@@ -7,14 +7,14 @@ export type ConversationDocument = HydratedDocument<Conversation>;
 
 @Schema({ timestamps: true })
 export class Conversation {
-  @Prop({ required: true, type: [String] })
-  participants: string[];
+  @Prop({ required: true, type: [Number] })
+  participants: number[];
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Message' })
   latestMessage: Message;
 
-  @Prop([String])
-  notifiedUsers: string[];
+  @Prop([Number])
+  notifiedUsers: number[];
 }
 
 export const ConversationSchema = SchemaFactory.createForClass(Conversation);
