@@ -18,7 +18,7 @@ config();
 
 @WebSocketGateway({
   cors: {
-    origin: process.env.CLIENT_URL,
+    origin: [process.env.CLIENT_URL_DEV, process.env.CLIENT_URL_PROD],
   },
 })
 export class ChatGateway {
