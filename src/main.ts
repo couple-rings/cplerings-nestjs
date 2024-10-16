@@ -10,7 +10,12 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
   const reflector = app.get(Reflector);
 
-  app.enableCors({ origin: configService.get<string>('CLIENT_URL') });
+  app.enableCors({
+    origin: [
+      configService.get<string>('CLIENT_URL_DEV'),
+      configService.get<string>('CLIENT_URL_PROD'),
+    ],
+  });
 
   // set global for interceptor
   app.useGlobalInterceptors(new TransformInterceptor(reflector));
