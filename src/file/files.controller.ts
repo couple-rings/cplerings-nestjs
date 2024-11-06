@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -14,6 +15,7 @@ import { UploadFileDto } from './dto/upload-file.dto';
 import { ResponseMessage } from 'src/decorator/decorator.custom';
 import imageValidation from './config/image.validation';
 import attachmentValidation from './config/attachment.validation';
+import { FileType } from 'src/util/enum';
 
 @Controller('files')
 export class FilesController {
@@ -26,6 +28,13 @@ export class FilesController {
     @Body() data: UploadFileDto,
     @UploadedFile(imageValidation) file: Express.Multer.File,
   ) {
+    if (!file && !data.type)
+      throw new BadRequestException('Must specify file type');
+    if (!file && data.type && data.type !== FileType.Image)
+      throw new BadRequestException('Invalid file type');
+    if (!file && !data.base64Image)
+      throw new BadRequestException('No image data found');
+
     return this.filesService.create(data, file);
   }
 
@@ -36,6 +45,13 @@ export class FilesController {
     @Body() data: UploadFileDto,
     @UploadedFile(attachmentValidation) file: Express.Multer.File,
   ) {
+    if (!file && !data.type)
+      throw new BadRequestException('Must specify file type');
+    if (!file && data.type && data.type !== FileType.Attachment)
+      throw new BadRequestException('Invalid file type');
+    if (!file && !data.base64Attachment)
+      throw new BadRequestException('No attachment data found');
+
     return this.filesService.create(data, file);
   }
 

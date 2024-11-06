@@ -6,6 +6,7 @@ import { ConfigService } from '@nestjs/config';
 import { InjectModel } from '@nestjs/mongoose';
 import { File } from './file.schema';
 import { Model } from 'mongoose';
+import { FileType } from 'src/util/enum';
 
 @Injectable()
 export class FilesService {
@@ -28,16 +29,36 @@ export class FilesService {
     const { folderName } = data;
 
     const s3 = new AWS.S3();
-
-    const fileContent = file.buffer;
-    const fileName = this.createFileName(file.originalname);
     const BUCKET = this.configService.get<string>('BUCKET');
+
+    let fileContent = null;
+    let fileName = '';
+    let contentType = '';
+
+    if (file) {
+      fileContent = file.buffer;
+      fileName = this.createFileName(file.originalname);
+    }
+
+    if (!file && data.base64Image && data.type === FileType.Image) {
+      fileContent = Buffer.from(data.base64Image.data as string, 'base64');
+      fileName = this.createFileName(data.base64Image.name);
+      contentType = data.base64Image.mimetype;
+    }
+
+    if (!file && data.base64Attachment && data.type === FileType.Attachment) {
+      fileContent = Buffer.from(data.base64Attachment.data as string, 'base64');
+      fileName = this.createFileName(data.base64Attachment.name);
+      contentType = data.base64Attachment.mimetype;
+    }
 
     return s3
       .upload({
         Body: fileContent,
         Bucket: BUCKET,
         Key: `${folderName}/${fileName}`,
+        ContentType: contentType ? contentType : undefined,
+        ContentEncoding: file ? undefined : 'base64',
       })
       .promise();
   }
@@ -47,11 +68,27 @@ export class FilesService {
 
     const { Location, Key } = res;
 
+    let originalName = '';
+    let size = 0;
+
+    if (file) {
+      originalName = file.originalname;
+      size = file.size;
+    }
+    if (!file && data.type === FileType.Image) {
+      originalName = data.base64Image.name;
+      size = data.base64Image.size;
+    }
+    if (!file && data.type === FileType.Attachment) {
+      originalName = data.base64Attachment.name;
+      size = data.base64Attachment.size;
+    }
+
     return this.fileModel.create({
       url: Location,
       key: Key,
-      originalName: file.originalname,
-      size: file.size,
+      originalName,
+      size,
     });
   }
 
