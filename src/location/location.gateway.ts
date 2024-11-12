@@ -20,7 +20,7 @@ export class LocationGateway {
   @WebSocketServer()
   server: Server;
 
-  @SubscribeMessage('join_room')
+  @SubscribeMessage('join_room_location')
   joinRoom(
     @MessageBody() data: number,
     @ConnectedSocket() client: Socket,
