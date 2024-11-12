@@ -8,6 +8,7 @@ import { ConversationsModule } from './conversation/conversations.module';
 import { MessagesModule } from './message/messages.module';
 import { ChatModule } from './chat/chat.module';
 import { FilesModule } from './file/files.module';
+import { LocationModule } from './location/location.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { FilesModule } from './file/files.module';
     MessagesModule,
     ChatModule,
     FilesModule,
+    LocationModule,
   ],
   controllers: [AppController],
   providers: [AppService],
