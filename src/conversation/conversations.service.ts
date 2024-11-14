@@ -1,5 +1,5 @@
 import { Model, Types } from 'mongoose';
-import { ConflictException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Conversation } from './conversation.schema';
 import { CreateConversationDto } from './dto/create-conversation.dto';
@@ -13,15 +13,13 @@ export class ConversationsService {
     private conversationModel: Model<Conversation>,
   ) {}
 
-  async create(
-    createConversationDto: CreateConversationDto,
-  ): Promise<Conversation> {
+  async create(createConversationDto: CreateConversationDto) {
     const { participants } = createConversationDto;
 
     const conversation = await this.conversationModel.find({
       participants: { $all: participants },
     });
-    if (conversation.length > 0) throw new ConflictException();
+    if (conversation.length > 0) return conversation[0];
 
     return this.conversationModel.create(createConversationDto);
   }
