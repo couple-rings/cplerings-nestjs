@@ -12,3 +12,5 @@ export const UPDATE_CONVERSATION_SUCCESS = 'Update conversations successfully';
 
 export const LOAD_MESSAGE_SUCCESS = 'Get messages successfully';
 export const UPDATE_MESSAGE_SUCCESS = 'Update message successfully';
+
+export const LOGIN_SUCCESS = 'Login successfully';

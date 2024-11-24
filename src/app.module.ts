@@ -9,6 +9,10 @@ import { MessagesModule } from './message/messages.module';
 import { ChatModule } from './chat/chat.module';
 import { FilesModule } from './file/files.module';
 import { LocationModule } from './location/location.module';
+import { MyConfigModule } from './config/config.module';
+import { NetworkModule } from './network/network.module';
+import { TokenModule } from './token/token.module';
+import { AxiosModule } from './axios/axios.module';
 
 @Module({
   imports: [
@@ -22,6 +26,10 @@ import { LocationModule } from './location/location.module';
     ChatModule,
     FilesModule,
     LocationModule,
+    MyConfigModule,
+    NetworkModule,
+    TokenModule,
+    AxiosModule,
   ],
   controllers: [AppController],
   providers: [AppService],
