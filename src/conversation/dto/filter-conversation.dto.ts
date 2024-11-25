@@ -1,7 +1,10 @@
-import { IsNotEmpty } from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsNotEmpty, IsNumber } from 'class-validator';
 
 export class ConversationFilterDto {
   @IsNotEmpty()
+  @Type(() => Number)
+  @IsNumber()
   userId: number;
 
   //   @IsOptional()
