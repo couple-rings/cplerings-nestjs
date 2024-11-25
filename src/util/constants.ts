@@ -14,3 +14,6 @@ export const LOAD_MESSAGE_SUCCESS = 'Get messages successfully';
 export const UPDATE_MESSAGE_SUCCESS = 'Update message successfully';
 
 export const LOGIN_SUCCESS = 'Login successfully';
+
+export const GET_USERS_SUCCESS = 'Get users successfully';
+export const GET_STAFF_SUCCESS = 'Get random staff successfully';

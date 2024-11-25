@@ -1,4 +1,4 @@
-import { ErrorType, ResponseType } from 'src/util/enum';
+import { ErrorType, ResponseType, UserRole } from 'src/util/enum';
 
 export {};
 
@@ -33,4 +33,13 @@ declare global {
   }
 
   interface IRefreshTokenResponse extends ILoginResponse {}
+
+  interface IUser {
+    id: number;
+    email: string;
+    username: string;
+    phone?: string;
+    avatar?: string;
+    role: UserRole;
+  }
 }

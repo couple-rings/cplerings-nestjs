@@ -1,8 +1,12 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, Get } from '@nestjs/common';
 import { ResponseMessage } from 'src/decorator/decorator.custom';
 import { LoginRequestDto } from './dto/login-request.dto';
 import { NetworkService } from './network.service';
-import { LOGIN_SUCCESS } from 'src/util/constants';
+import {
+  GET_STAFF_SUCCESS,
+  GET_USERS_SUCCESS,
+  LOGIN_SUCCESS,
+} from 'src/util/constants';
 
 @Controller('network')
 export class NetWorkController {
@@ -14,11 +18,17 @@ export class NetWorkController {
     return this.networkService.postLogin(loginRequestDto);
   }
 
-  //   @Get()
-  //   @ResponseMessage(LOAD_CONVERSATION_SUCCESS)
-  //   findList(@Query() query: ConversationFilterDto) {
-  //     return this.conversationService.findConversations(query);
-  //   }
+  @Post('users')
+  @ResponseMessage(GET_USERS_SUCCESS)
+  getUsers(@Body() data: { userIds: number[] }) {
+    return this.networkService.getUsers(data.userIds);
+  }
+
+  @Get('staff')
+  @ResponseMessage(GET_STAFF_SUCCESS)
+  getRandomStaff() {
+    return this.networkService.getRandomStaff();
+  }
 
   //   @Put(':id')
   //   @ResponseMessage(UPDATE_CONVERSATION_SUCCESS)

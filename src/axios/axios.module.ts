@@ -1,4 +1,4 @@
-import { Module, OnModuleInit } from '@nestjs/common';
+import { forwardRef, Module, OnModuleInit } from '@nestjs/common';
 import { HttpModule, HttpService } from '@nestjs/axios';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AxiosHttpService } from './axios.service';
@@ -19,7 +19,7 @@ import { ConfigKey } from 'src/util/enum';
       inject: [ConfigService],
     }),
     MyConfigModule,
-    NetworkModule,
+    forwardRef(() => NetworkModule),
   ],
   providers: [
     {
@@ -86,11 +86,11 @@ export class AxiosModule implements OnModuleInit {
     // Declare response interceptor
     axiosRef.interceptors.response.use(
       (response) => {
-        console.log('Refresh Response Interceptor:', response.data);
-        return response.data ? response.data : response;
+        // console.log('Refresh Response Interceptor:', response.data);
+        return response;
       },
       async (error: AxiosError<IResponse<undefined>>) => {
-        console.error('Refresh Response Error:', error);
+        // console.error('Refresh Response Error:', error);
 
         const status = error.response?.status || 500;
 

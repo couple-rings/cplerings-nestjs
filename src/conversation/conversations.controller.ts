@@ -9,6 +9,7 @@ import {
 import { CreateConversationDto } from './dto/create-conversation.dto';
 import { UpdateConversationDto } from './dto/update-conversation.dto';
 import { ConversationFilterDto } from './dto/filter-conversation.dto';
+import { GetDetailDto } from './dto/get-detail.dto';
 
 @Controller('conversations')
 export class ConversationsController {
@@ -20,10 +21,22 @@ export class ConversationsController {
     return this.conversationService.create(createConversationDto);
   }
 
+  @Post('random')
+  @ResponseMessage(CREATE_CONVERSATION_SUCCESS)
+  createRandom(@Body() data: { userId: number }) {
+    return this.conversationService.createRandom(data.userId);
+  }
+
   @Get()
   @ResponseMessage(LOAD_CONVERSATION_SUCCESS)
   findList(@Query() query: ConversationFilterDto) {
     return this.conversationService.findConversations(query);
+  }
+
+  @Get('detail')
+  @ResponseMessage(LOAD_CONVERSATION_SUCCESS)
+  findOne(@Query() query: GetDetailDto) {
+    return this.conversationService.getConversationDetail(query);
   }
 
   @Put(':id')
