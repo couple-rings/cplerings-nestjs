@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { firstValueFrom } from 'rxjs';
 import { LoginRequestDto } from './dto/login-request.dto';
 import { RefreshRequestDto } from './dto/refresh-request.dto';
@@ -31,8 +31,6 @@ export class NetworkService {
   }
 
   async getUsers(userIds: number[]) {
-    if (userIds.length === 0) throw new BadRequestException();
-
     const queryUrl = qs.stringify(
       { userIds },
       {
@@ -45,7 +43,7 @@ export class NetworkService {
         `accounts/users?${queryUrl}`,
       ),
     );
-    console.log(response);
+
     return response.data;
   }
 

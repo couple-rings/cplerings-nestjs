@@ -63,24 +63,26 @@ export class ConversationsService {
 
       conversations.forEach((item) => {
         const partnerId = item.participants.find((id) => id !== userId);
-        userIdArray.push(partnerId);
+        if (partnerId) userIdArray.push(partnerId);
       });
 
-      const response = await this.networkService.getUsers(userIdArray);
-      // console.log(response);
-      if (response.data) {
-        return conversations.map((item) => {
-          const partnerId = item.participants.find((id) => id !== userId);
+      if (userIdArray.length > 0) {
+        const response = await this.networkService.getUsers(userIdArray);
 
-          const partner = response.data.users.find(
-            (item) => item.id === partnerId,
-          );
+        if (response.data) {
+          return conversations.map((item) => {
+            const partnerId = item.participants.find((id) => id !== userId);
 
-          return {
-            ...item.toObject(),
-            partner: partner,
-          };
-        });
+            const partner = response.data.users.find(
+              (item) => item.id === partnerId,
+            );
+
+            return {
+              ...item.toObject(),
+              partner: partner,
+            };
+          });
+        }
       }
     }
 
@@ -105,19 +107,21 @@ export class ConversationsService {
       const userIdArray: number[] = [];
 
       const partnerId = conversation.participants.find((id) => id !== userId);
-      userIdArray.push(partnerId);
+      if (partnerId) userIdArray.push(partnerId);
 
-      const response = await this.networkService.getUsers(userIdArray);
+      if (userIdArray.length > 0) {
+        const response = await this.networkService.getUsers(userIdArray);
 
-      if (response.data) {
-        const partner = response.data.users.find(
-          (item) => item.id === partnerId,
-        );
+        if (response.data) {
+          const partner = response.data.users.find(
+            (item) => item.id === partnerId,
+          );
 
-        return {
-          ...conversation.toObject(),
-          partner: partner,
-        };
+          return {
+            ...conversation.toObject(),
+            partner: partner,
+          };
+        }
       }
     }
 
