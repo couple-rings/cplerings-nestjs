@@ -4,9 +4,11 @@ import { ConfigService } from '@nestjs/config';
 import { ValidationPipe, VersioningType } from '@nestjs/common';
 import { TransformInterceptor } from './util/transform.interceptor';
 import { urlencoded, json } from 'express';
+import { NestExpressApplication } from '@nestjs/platform-express';
+import { join } from 'path';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
   const configService = app.get(ConfigService);
   const reflector = app.get(Reflector);
@@ -31,6 +33,11 @@ async function bootstrap() {
       forbidNonWhitelisted: true,
     }),
   );
+
+  // config css, js, image location
+  app.useStaticAssets(join(__dirname, '..', 'public'));
+  app.setBaseViewsDir(join(__dirname, '..', 'public', 'views'));
+  app.setViewEngine('ejs');
 
   // config api version
   app.enableVersioning({
